@@ -1,30 +1,25 @@
---Top Selling Products
-SELECT
-product_name,
-SUM(quantity) total_quantity
-FROM orders
-JOIN products
-ON orders.product_id=products.product_id
-GROUP BY product_name
-ORDER BY total_quantity DESC;
+CREATE TABLE customers(
+	customer_id INT PRIMARY KEY,
+	customer_name VARCHAR(100),
+	city VARCHAR(100),
+	state VARCHAR(50)
+); 
 
---Highest Spending Customer 
-SELECT
-customer_name,
-SUM(quantity*price) total_sales
-FROM orders
-JOIN customers
-ON orders.customer_id=customers.customer_id
-JOIN products
-ON orders.product_id=products.product_id
-GROUP BY customer_name
-ORDER BY total_sales DESC;
+CREATE TABLE products(
+	product_id INT PRIMARY KEY,
+	product_name VARCHAR(100),
+	category VARCHAR(50),
+	price DECIMAL(10,2)
+); 
 
---Category wise Sales
-SELECT
-category,
-SUM(quantity*price) total_sales
-FROM orders
-JOIN products
-ON orders.product_id=products.product_id
-GROUP BY category;
+CREATE TABLE orders(
+	order_id INT PRIMARY KEY,
+	customer_id INT,
+	product_id INT,
+	order_date DATE,
+	quantity INT,
+	FOREIGN KEY(customer_id) REFERENCES
+	customers(customer_id),
+	FOREIGN KEY(product_id) REFERENCES
+	products(product_id)
+);
